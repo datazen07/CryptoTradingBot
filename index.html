@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+
+<head>
+    <title>Backtest Crypto Trading Strategy</title>
+</head>
+
+<header>
+
+    <h1>Welcome to Backtest Crypto Trading Strategy</h1>
+
+    <p>Backtesting involves defining a trading strategy’s rules, usually through software,
+        for use with market data from a specified period. </p>
+
+    <p>This is the perfect place to test a moving average strategy for making money with crypto.</p>
+</header>
+
+<body>
+
+    <h2>Steps</h2>
+
+    <ol>
+        <li>Choose a cryptocurrency.</li>
+        <li>Choose a start date and an end date.</li>
+        <li>Set the length of the moving average.</li>
+        <li>Set the percentage of your capital you invest for each transaction.</li>
+    </ol>
+
+    <h2>Data</h2>
+
+    <form method="post">
+        {%csrf_token%}
+
+        <div>
+            <p>
+                <label>Crypto</label>
+                <input type="text" name="crypto" value="{{ crypto }}" placeholder="Ex: BTC, ETH, LTC..." maxlength="10" required>
+            </p>
+
+            <p>
+                <label>Start date</label>
+                <input type="date" name="start_date" value="{{ start_date }}" required>
+            </p>
+
+            <p>
+                <label>End date</label>
+                <input type="date" name="end_date" value="{{ end_date }}" required>
+            </p>
+
+            <p>
+                <label>Moving average length</label>
+                <input type="number" name="length" min="0" value="{{ length }}" placeholder="Ex: 5, 13, 21, 55..." maxlength="3"  required>
+            </p>
+
+            <p>
+                <label>Percentage of invested capital</label>
+                <input type="number" name="percentage" min="0" value="{{ percentage }}" placeholder="Ex: 10, 25..." maxlength="3"  required>
+            </p>
+        </div>
+
+        <button type="submit" class="button_style">BACKTEST</button>
+
+    </form>
+
+    <h2>Result</h2>
+
+    <p>Starting Portfolio Value: {{ cash_start }}.<br>
+    <p>{{ percentage }}% invested per trade,, with a simulated brokerage commission of 0.1%.<br>
+    <p>For {{ crypto }}-USD from {{ start_date }} to {{ end_date }} with a {{ length }}
+        exponential moving average strategy (long only).<br>
+        Final Portfolio Value: {{ cash_end }}.</p>
+
+    <h2>Your chart</h2>
+
+    {% if chart.image %}
+        <img src="{{ chart.image.url }}" alt="Sorry! {{ chart.image.url }} not available">
+    {% endif %}
+
+</body>
+
+</html>
